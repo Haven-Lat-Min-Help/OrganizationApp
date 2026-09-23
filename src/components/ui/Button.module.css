@@ -1,0 +1,72 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border-radius: var(--radius-chip);
+  border: 1px solid transparent;
+  font-weight: var(--weight-semibold);
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.md {
+  height: 40px;
+  padding: 0 var(--space-4);
+  font-size: var(--text-base);
+}
+
+.sm {
+  height: 34px;
+  padding: 0 var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.primary {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.primary:hover:not(:disabled) {
+  background: var(--color-primary-pressed);
+}
+
+/* Page-level call to action (header "Add branch or staff"). */
+.dark {
+  background: var(--color-primary-dark);
+  color: #ffffff;
+}
+
+.dark:hover:not(:disabled) {
+  background: #072a20;
+}
+
+.secondary {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-ink);
+}
+
+.secondary:hover:not(:disabled) {
+  background: var(--color-tint);
+  border-color: var(--color-tint-border);
+}
+
+.ghost {
+  background: transparent;
+  color: var(--color-body);
+}
+
+.ghost:hover:not(:disabled) {
+  background: var(--color-tint);
+  color: var(--color-ink);
+}

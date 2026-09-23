@@ -1,0 +1,98 @@
+/*
+ * Haven Organization — design tokens.
+ *
+ * Single source of truth for color, type scale, spacing, radii and shadows.
+ * Every component reads from these custom properties instead of hardcoding
+ * values, so the whole app can be restyled from this one file.
+ *
+ * Kept identical to WebApp/src/styles/tokens.css (and the brand palette in
+ * MobileApp/src/theme/colors.ts) so all of Haven's apps share one look. If a
+ * token changes here, change it there too.
+ *
+ * Status colors (--status-*): warning/serious sit below 3:1 contrast as raw
+ * text on white, so they are only ever used as a tinted chip background or dot
+ * next to dark ink text, never as colored text. --status-critical is Haven's
+ * reserved emergency red — used ONLY for genuinely critical status, same rule
+ * as the 112 button in MobileApp.
+ */
+
+:root {
+  /* ---- Brand color (shared with MobileApp) ---- */
+  --color-primary-dark: #0b3d2e;
+  --color-primary: #0b7a55;
+  --color-primary-pressed: #086647;
+  --color-tint: #e9f3ee;
+  --color-tint-border: #cbe3d6;
+  --color-emergency: #de3b21;
+  --color-emergency-pressed: #b92e19;
+
+  /* ---- Ink & surfaces ---- */
+  --color-ink: #16211b; /* primary text */
+  --color-body: #3c4a42; /* secondary text */
+  --color-muted: #5b6b62; /* tertiary / captions */
+  --color-background: #fafbfa; /* page plane */
+  --color-surface: #ffffff; /* card surface */
+  --color-border: #e3e7e9;
+  --color-input-border: #b9c6be;
+  --color-warn-bg: #fbebec;
+  --color-warn-border: #f0c9cc;
+
+  /* ---- Status palette (fixed — never themed, never reused as decoration) ---- */
+  --status-good: #0b7a55;
+  --status-good-bg: #e9f3ee;
+  --status-warning: #fab219;
+  --status-warning-bg: #fef3de;
+  --status-serious: #ec835a;
+  --status-serious-bg: #fdece4;
+  --status-critical: #de3b21;
+  --status-critical-bg: #fbebec;
+
+  /* ---- Typography ---- */
+  --font-sans:
+    system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  /* Type scale — use these everywhere instead of ad hoc font-size values. */
+  --text-xs: 12px; /* micro labels, table meta */
+  --text-sm: 13px; /* captions, badge text */
+  --text-base: 14px; /* default body / form text */
+  --text-md: 15px; /* emphasized body, card titles */
+  --text-lg: 18px; /* section labels, wordmark */
+  --text-xl: 22px; /* page title */
+
+  --leading-tight: 1.2;
+  --leading-normal: 1.45;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* ---- Spacing scale (4px base) ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+
+  /* ---- Radii (match MobileApp/src/theme/colors.ts radii) ---- */
+  --radius-chip: 8px;
+  --radius-card: 14px;
+  --radius-pill: 999px;
+
+  /* ---- Elevation ---- */
+  --shadow-card: 0 1px 2px rgba(11, 33, 27, 0.04), 0 1px 1px rgba(11, 33, 27, 0.03);
+  --shadow-popover: 0 8px 24px rgba(11, 33, 27, 0.12), 0 2px 6px rgba(11, 33, 27, 0.06);
+
+  /* ---- Layout ---- */
+  --content-max-width: 1280px;
+
+  /* ---- Motion ---- */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --duration-fast: 120ms;
+  --duration-base: 180ms;
+
+  color-scheme: light;
+}
