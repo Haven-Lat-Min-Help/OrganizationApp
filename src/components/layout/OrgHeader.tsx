@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../config/supabase';
-import { organization } from '../../data/mockBranches';
+import { useOrganization } from '../../context/OrganizationContext';
 import styles from './OrgHeader.module.css';
 
 function initials(name: string): string {
@@ -15,11 +15,11 @@ function initials(name: string): string {
 
 /**
  * Top bar of the partner portal: Haven wordmark + "partner" tag, the signed-in
- * organization's name, an accepting-cases indicator, and the account menu
- * (profile / sign out). Organization details are mock data for now — see
- * src/data/mockBranches.ts.
+ * organization's name and active status (from OrganizationProvider), and the
+ * account menu (profile / sign out).
  */
 export function OrgHeader() {
+  const { organization } = useOrganization();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -51,18 +51,18 @@ export function OrgHeader() {
   return (
     <header className={styles.header}>
       <div className={styles.inner}>
-        <Link to="/branches" className={styles.brand}>
+        <Link to="/home" className={styles.brand}>
           <span className={styles.wordmark}>Haven</span>
           <span className={styles.partnerTag}>partner</span>
         </Link>
         <span className={styles.divider} aria-hidden="true" />
-        <span className={styles.orgName}>{organization.name}</span>
+        <span className={styles.orgName}>{organization?.name}</span>
 
         <div className={styles.right}>
-          {organization.acceptingCases && (
+          {organization?.is_active && (
             <span className={styles.accepting}>
               <span className={styles.acceptingDot} aria-hidden="true" />
-              Accepting cases
+              Active
             </span>
           )}
 
@@ -75,7 +75,7 @@ export function OrgHeader() {
               aria-expanded={menuOpen}
               aria-label="Account menu"
             >
-              {initials(organization.name)}
+              {organization ? initials(organization.name) : ''}
             </button>
             {menuOpen && (
               <div className={styles.menu} role="menu">

@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '../config/supabase';
 import { isOrgRole } from '../config/roles';
 import styles from './OrgLogin.module.css';
@@ -11,7 +11,9 @@ import styles from './OrgLogin.module.css';
  */
 export function OrgLogin() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
+  // Set by AcceptInvite after a successful password setup.
+  const handoff = useLocation().state as { notice?: string; email?: string } | null;
+  const [email, setEmail] = useState(handoff?.email ?? '');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -45,7 +47,7 @@ export function OrgLogin() {
       return;
     }
 
-    navigate('/branches', { replace: true });
+    navigate('/home', { replace: true });
   }
 
   return (
@@ -60,6 +62,8 @@ export function OrgLogin() {
           <h1 className={styles.title}>Partner sign in</h1>
           <p className={styles.subtitle}>Manage your hospital branches, staff and shifts.</p>
         </div>
+
+        {handoff?.notice && <p className={styles.notice}>{handoff.notice}</p>}
 
         <form onSubmit={handleSubmit} className={styles.form} noValidate>
           <div className={styles.field}>
