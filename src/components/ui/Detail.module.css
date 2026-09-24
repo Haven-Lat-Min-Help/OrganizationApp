@@ -1,0 +1,24 @@
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.label {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+
+.value {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  color: var(--color-ink);
+  overflow-wrap: anywhere;
+}
+
+.empty {
+  color: var(--color-muted);
+  font-weight: var(--weight-regular);
+}
