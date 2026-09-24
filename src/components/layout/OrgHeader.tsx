@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../config/supabase';
+import { useOptionalBranch } from '../../context/BranchContext';
 import { useOrganization } from '../../context/OrganizationContext';
 import styles from './OrgHeader.module.css';
 
@@ -15,11 +16,13 @@ function initials(name: string): string {
 
 /**
  * Top bar of the partner portal: Haven wordmark + "partner" tag, the signed-in
- * organization's name and active status (from OrganizationProvider), and the
- * account menu (profile / sign out).
+ * organization's name (plus the branch name for a branch admin) and active
+ * status (from OrganizationProvider), and the account menu (profile / sign out).
  */
 export function OrgHeader() {
   const { organization } = useOrganization();
+  // Present only for a branch admin (BranchScope); null for every other role.
+  const branch = useOptionalBranch();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -56,7 +59,10 @@ export function OrgHeader() {
           <span className={styles.partnerTag}>partner</span>
         </Link>
         <span className={styles.divider} aria-hidden="true" />
-        <span className={styles.orgName}>{organization?.name}</span>
+        <span className={styles.orgName}>
+          {organization?.name}
+          {branch && ` · ${branch.name}`}
+        </span>
 
         <div className={styles.right}>
           {organization?.is_active && (

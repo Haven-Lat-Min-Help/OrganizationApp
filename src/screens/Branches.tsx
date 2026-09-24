@@ -1,59 +1,80 @@
+import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AddBranchCard } from '../components/branches/AddBranchCard';
 import { BranchCard } from '../components/branches/BranchCard';
-import { PageHeader, type PageTab } from '../components/layout/PageHeader';
+import { PageHeader } from '../components/layout/PageHeader';
 import { PortalShell } from '../components/layout/PortalShell';
 import { Button } from '../components/ui/Button';
-import { branches, organization } from '../data/mockBranches';
+import { apiFetch, ApiError } from '../config/api';
+import { ORG_TABS } from '../config/orgTabs';
+import { useOrganization } from '../context/OrganizationContext';
+import { useHospitalTypes } from '../hooks/useHospitalTypes';
+import type { Branch } from '../types/branch';
 import styles from './Branches.module.css';
 
-const TABS: PageTab[] = [
-  { label: 'Branches', path: '/branches' },
-  { label: 'Staff' },
-  { label: '24/7 shifts' },
-  { label: 'Capabilities' },
-  { label: 'Documents' },
-];
-
 /**
- * Organization landing page — the org's branches as a card grid. Branches and
- * the org summary currently read from src/data/mockBranches.ts (flagged as
- * placeholder there): Backend has no org-scoped branch endpoints yet, so this
- * UI is built ahead of that API. Swapping the mock import for a real fetch is
- * the only change needed once those endpoints exist. The header actions and
- * per-card actions aren't wired to flows yet.
+ * Org admin's branches tab — every branch in their organization as a card grid,
+ * loaded from GET /branches (the backend scopes it to the caller's org), with a
+ * tile and a header button that lead to the add-branch form. Hospital-type
+ * names come from the type catalogue; a branch itself only carries ids.
  */
 export function Branches() {
+  const navigate = useNavigate();
+  const { organization } = useOrganization();
+  const { hospitalTypes } = useHospitalTypes();
+  const [branches, setBranches] = useState<Branch[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    apiFetch<{ branches: Branch[] }>('/branches')
+      .then((data) => {
+        if (!cancelled) setBranches(data.branches);
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          setError(err instanceof ApiError ? err.message : 'Something went wrong, please try again');
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const typeNames = useMemo(() => new Map(hospitalTypes.map((type) => [type.id, type.name])), [hospitalTypes]);
+
   return (
     <PortalShell
       header={
         <PageHeader
-          title={organization.name}
-          meta={
-            <>
-              {organization.branchCount} branches · {organization.responderCount} responders · Verified{' '}
-              {organization.verifiedOn} · Reg. no. <strong>{organization.registrationNumber}</strong>
-            </>
-          }
+          title={organization?.name ?? 'Your organization'}
+          meta={branches ? `${branches.length} ${branches.length === 1 ? 'branch' : 'branches'}` : undefined}
           actions={
-            <>
-              <Button variant="secondary" size="sm">
-                Bulk import staff
-              </Button>
-              <Button variant="dark" size="sm">
-                + Add branch or staff
-              </Button>
-            </>
+            <Button variant="dark" size="sm" onClick={() => navigate('/branches/new')}>
+              + Add branch
+            </Button>
           }
-          tabs={TABS}
+          tabs={ORG_TABS}
         />
       }
     >
-      <div className={styles.grid}>
-        {branches.map((branch) => (
-          <BranchCard key={branch.id} branch={branch} />
-        ))}
-        <AddBranchCard />
-      </div>
+      {error && (
+        <p role="alert" className={styles.error}>
+          {error}
+        </p>
+      )}
+      {!error && !branches && <p className={styles.empty}>Loading…</p>}
+
+      {branches && (
+        <div className={styles.grid}>
+          {branches.map((branch) => (
+            <BranchCard key={branch.id} branch={branch} typeNames={typeNames} />
+          ))}
+          <AddBranchCard />
+        </div>
+      )}
     </PortalShell>
   );
 }

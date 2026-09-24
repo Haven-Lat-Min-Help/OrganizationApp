@@ -1,23 +1,13 @@
-import { PageHeader, type PageTab } from '../components/layout/PageHeader';
+import { useNavigate } from 'react-router-dom';
+import { PageHeader } from '../components/layout/PageHeader';
 import { PortalShell } from '../components/layout/PortalShell';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
 import { Detail } from '../components/ui/Detail';
+import { ORG_TABS } from '../config/orgTabs';
 import { useOrganization } from '../context/OrganizationContext';
+import { formatDate } from '../utils/formatDate';
 import styles from './Home.module.css';
-
-const TABS: PageTab[] = [
-  { label: 'Overview', path: '/home' },
-  { label: 'Branches' },
-  { label: 'Staff' },
-  { label: '24/7 shifts' },
-  { label: 'Capabilities' },
-  { label: 'Documents' },
-];
-
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
-}
 
 /**
  * Landing page after login — for now, the signed-in user's own organization
@@ -27,6 +17,7 @@ function formatDate(iso: string): string {
  */
 export function Home() {
   const { organization, error } = useOrganization();
+  const navigate = useNavigate();
 
   const location = organization
     ? [organization.city, organization.state, organization.country].filter(Boolean).join(', ')
@@ -43,12 +34,12 @@ export function Home() {
               <Button variant="secondary" size="sm">
                 Bulk import staff
               </Button>
-              <Button variant="dark" size="sm">
-                + Add branch or staff
+              <Button variant="dark" size="sm" onClick={() => navigate('/branches/new')}>
+                + Add branch
               </Button>
             </>
           }
-          tabs={TABS}
+          tabs={ORG_TABS}
         />
       }
     >

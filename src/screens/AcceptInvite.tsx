@@ -9,6 +9,8 @@ interface InviteDetails {
   name: string;
   email: string | null;
   org_name: string;
+  /** Set for a branch-admin invite, null for an org-admin one. */
+  branch_name: string | null;
 }
 
 // verifying → ready is the happy path; the rest are terminal states that
@@ -38,7 +40,9 @@ const TERMINAL_MESSAGES: Record<Exclude<Phase, 'verifying' | 'ready'>, { title: 
 };
 
 /**
- * Landing screen for the org-admin invite email (…/accept-invite?uid=…&token=…).
+ * Landing screen for the org-admin and branch-admin invite emails
+ * (…/accept-invite?uid=…&token=…) — one screen for both, since the backend
+ * resolves which kind of invite it is.
  * Verifies the link with POST /auth/invite/verify, then collects a password
  * and sends it to POST /auth/invite/accept — which sets the password and
  * creates the profile — before sending the user to /login. The uid/token live
@@ -159,7 +163,11 @@ export function AcceptInvite() {
           <>
             <div className={styles.heading}>
               <h1 className={styles.title}>Welcome, {invite.name}</h1>
-              <p className={styles.subtitle}>Set a password to manage {invite.org_name} on Haven.</p>
+              <p className={styles.subtitle}>
+                {invite.branch_name
+                  ? `Set a password to manage the ${invite.branch_name} branch of ${invite.org_name} on Haven.`
+                  : `Set a password to manage ${invite.org_name} on Haven.`}
+              </p>
             </div>
 
             <form onSubmit={handleSubmit} className={styles.form} noValidate>

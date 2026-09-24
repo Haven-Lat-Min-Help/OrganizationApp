@@ -19,22 +19,44 @@ export class ApiError extends Error {
 }
 
 /**
- * Calls the Backend Express server with the current Supabase session's
- * access token — the same JWT verifySupabaseJwt checks server-side.
+ * One request to the Backend. Uses the current session's access token — the
+ * same JWT verifySupabaseJwt checks server-side — unless the caller already
+ * has a fresher one (right after a refresh).
  */
-export async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+async function send(path: string, options: RequestInit, accessToken?: string): Promise<Response> {
+  const token = accessToken ?? (await supabase.auth.getSession()).data.session?.access_token;
 
-  const response = await fetch(`${BACKEND_URL}${path}`, {
+  return fetch(`${BACKEND_URL}${path}`, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
-      ...(session ? { Authorization: `Bearer ${session.access_token}` } : {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...options.headers,
     },
   });
+}
+
+/**
+ * Calls the Backend Express server. A 401 usually means the access token went
+ * stale while the tab sat idle (browsers throttle the background timer that
+ * renews it), so on a 401 the session is refreshed once and the request
+ * retried. If it's still 401 the session is genuinely dead: the local session
+ * is cleared and the user is sent to /login.
+ */
+export async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
+  let response = await send(path, options);
+
+  if (response.status === 401) {
+    const { data, error } = await supabase.auth.refreshSession();
+    if (!error && data.session) {
+      response = await send(path, options, data.session.access_token);
+    }
+
+    if (response.status === 401) {
+      await supabase.auth.signOut({ scope: 'local' });
+      window.location.assign('/login');
+    }
+  }
 
   const body = await response.json().catch(() => null);
 
