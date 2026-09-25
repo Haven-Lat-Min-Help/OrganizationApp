@@ -16,12 +16,12 @@ function initials(name: string): string {
 
 /**
  * Top bar of the partner portal: Haven wordmark + "partner" tag, the signed-in
- * organization's name (plus the branch name for a branch admin) and active
+ * organization's name (plus the branch name for a branch admin or staff member) and active
  * status (from OrganizationProvider), and the account menu (profile / sign out).
  */
 export function OrgHeader() {
   const { organization } = useOrganization();
-  // Present only for a branch admin (BranchScope); null for every other role.
+  // Present for a branch admin or staff member (BranchScope); null for the org admin.
   const branch = useOptionalBranch();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);

@@ -4,11 +4,22 @@ import { useUserRole } from '../context/UserRoleContext';
 
 /**
  * Same path, different page per role: the branch admin gets the branch pages,
- * every other org role keeps the existing organization pages. Routing only —
- * the backend enforces the real access rules on every call.
+ * staff get their own pages, and the org admin keeps the organization pages.
+ * Routing only — the backend enforces the real access rules on every call.
  */
-export function RoleSwitch({ branchAdmin, otherwise }: { branchAdmin: ReactElement; otherwise: ReactElement }) {
-  return useUserRole() === 'branch_admin' ? branchAdmin : otherwise;
+export function RoleSwitch({
+  branchAdmin,
+  staff,
+  otherwise,
+}: {
+  branchAdmin: ReactElement;
+  staff: ReactElement;
+  otherwise: ReactElement;
+}) {
+  const role = useUserRole();
+  if (role === 'branch_admin') return branchAdmin;
+  if (role === 'staff') return staff;
+  return otherwise;
 }
 
 /** Pages that exist only for an org admin (branch management); anyone else is sent home. */

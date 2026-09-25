@@ -1,4 +1,4 @@
-/* Shared by AddBranch and BranchDetail (both are branch forms/pages for the org admin). */
+/* Shared form-page layout: AddBranch and BranchDetail (org admin) and AddStaff (branch admin). */
 
 .card {
   margin-bottom: var(--space-4);
@@ -28,6 +28,13 @@
   color: var(--color-muted);
 }
 
+/* Inline message under a non-FormField control (e.g. MultiSelect) — same look as FormField's error. */
+.fieldError {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-emergency-pressed);
+}
+
 .error {
   background: var(--color-warn-bg);
   border: 1px solid var(--color-warn-border);
@@ -36,6 +43,12 @@
   border-radius: var(--radius-chip);
   padding: var(--space-2) var(--space-3);
   margin: 0 0 var(--space-4);
+}
+
+.errorLink {
+  color: inherit;
+  font-weight: var(--weight-semibold);
+  text-decoration: underline;
 }
 
 .success {
@@ -73,30 +86,6 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-chip);
   padding: 2px var(--space-2);
-}
-
-.pill {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: var(--weight-semibold);
-  border-radius: var(--radius-pill);
-  padding: 2px var(--space-2);
-  white-space: nowrap;
-}
-
-.pillGood {
-  background: var(--status-good-bg);
-  color: var(--color-primary-dark);
-}
-
-.pillWarn {
-  background: var(--status-warning-bg);
-  color: var(--color-ink);
-}
-
-.pillMuted {
-  background: #eef0f0;
-  color: var(--color-body);
 }
 
 .stack {

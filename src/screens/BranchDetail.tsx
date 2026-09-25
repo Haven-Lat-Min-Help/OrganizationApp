@@ -6,10 +6,11 @@ import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
 import { Detail } from '../components/ui/Detail';
 import { FormField } from '../components/ui/FormField';
+import { InviteStatusPill } from '../components/ui/InviteStatusPill';
 import { apiFetch, ApiError } from '../config/api';
 import { ORG_TABS } from '../config/orgTabs';
 import { useHospitalTypes } from '../hooks/useHospitalTypes';
-import type { Branch, BranchAdmin } from '../types/branch';
+import type { Branch } from '../types/branch';
 import { formatDate } from '../utils/formatDate';
 import styles from './BranchForms.module.css';
 
@@ -37,12 +38,6 @@ interface Notice {
   text: string;
   warn: boolean;
 }
-
-const ADMIN_STATUS: Record<BranchAdmin['status'], { label: string; className: string }> = {
-  active: { label: 'Active', className: styles.pillGood },
-  pending: { label: 'Invite pending', className: styles.pillWarn },
-  expired: { label: 'Invite expired', className: styles.pillMuted },
-};
 
 function errorMessage(err: unknown): string {
   return err instanceof ApiError ? err.message : 'Something went wrong, please try again';
@@ -244,7 +239,7 @@ export function BranchDetail() {
             title="Branch admin"
             className={styles.card}
             action={
-              admin && <span className={`${styles.pill} ${ADMIN_STATUS[admin.status].className}`}>{ADMIN_STATUS[admin.status].label}</span>
+              admin && <InviteStatusPill status={admin.status} />
             }
           >
             <div className={styles.stack}>

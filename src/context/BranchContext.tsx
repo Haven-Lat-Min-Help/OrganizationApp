@@ -12,10 +12,10 @@ interface BranchState {
 const BranchContext = createContext<BranchState | null>(null);
 
 /**
- * Loads the signed-in branch admin's own branch once (GET /branches, which the
- * backend narrows to the branch on the caller's profile) and shares it with
- * every branch-admin screen and the top bar. The browser never says which
- * branch — same idea as OrganizationProvider.
+ * Loads the signed-in branch admin's or staff member's own branch once
+ * (GET /branches, which the backend narrows to the branch on the caller's
+ * profile) and shares it with their screens and the top bar. The browser never
+ * says which branch — same idea as OrganizationProvider.
  */
 export function BranchProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<BranchState>({ branch: null, error: null });
@@ -46,7 +46,7 @@ export function BranchProvider({ children }: { children: ReactNode }) {
   return <BranchContext.Provider value={state}>{children}</BranchContext.Provider>;
 }
 
-/** Only usable on branch-admin screens, inside <BranchProvider>. */
+/** Only usable on branch-admin and staff screens, inside <BranchProvider>. */
 export function useBranch(): BranchState {
   const context = useContext(BranchContext);
   if (!context) throw new Error('useBranch must be used inside <BranchProvider>');
@@ -61,8 +61,16 @@ export function useOptionalBranch(): Branch | null {
   return useContext(BranchContext)?.branch ?? null;
 }
 
-/** Wraps children in <BranchProvider> for branch admins only; other roles never fetch a branch. */
+/**
+ * Wraps children in <BranchProvider> for the branch-scoped roles — branch
+ * admins and staff, who both belong to exactly one branch (GET /branches
+ * returns just that one for either). The org admin never fetches a branch.
+ */
 export function BranchScope({ children }: { children: ReactNode }) {
   const role = useUserRole();
-  return role === 'branch_admin' ? <BranchProvider>{children}</BranchProvider> : <>{children}</>;
+  return role === 'branch_admin' || role === 'staff' ? (
+    <BranchProvider>{children}</BranchProvider>
+  ) : (
+    <>{children}</>
+  );
 }

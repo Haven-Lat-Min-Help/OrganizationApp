@@ -9,7 +9,7 @@ interface InviteDetails {
   name: string;
   email: string | null;
   org_name: string;
-  /** Set for a branch-admin invite, null for an org-admin one. */
+  /** Set for a branch-admin or staff invite, null for an org-admin one. */
   branch_name: string | null;
 }
 
@@ -40,8 +40,8 @@ const TERMINAL_MESSAGES: Record<Exclude<Phase, 'verifying' | 'ready'>, { title: 
 };
 
 /**
- * Landing screen for the org-admin and branch-admin invite emails
- * (…/accept-invite?uid=…&token=…) — one screen for both, since the backend
+ * Landing screen for every invite email — org admin, branch admin and staff
+ * (…/accept-invite?uid=…&token=…) — one screen for all, since the backend
  * resolves which kind of invite it is.
  * Verifies the link with POST /auth/invite/verify, then collects a password
  * and sends it to POST /auth/invite/accept — which sets the password and
@@ -163,10 +163,12 @@ export function AcceptInvite() {
           <>
             <div className={styles.heading}>
               <h1 className={styles.title}>Welcome, {invite.name}</h1>
+              {/* Worded for every invited role (org admin, branch admin, staff): the
+                  verify response deliberately carries no role. */}
               <p className={styles.subtitle}>
                 {invite.branch_name
-                  ? `Set a password to manage the ${invite.branch_name} branch of ${invite.org_name} on Haven.`
-                  : `Set a password to manage ${invite.org_name} on Haven.`}
+                  ? `Set a password to join the ${invite.branch_name} branch of ${invite.org_name} on Haven.`
+                  : `Set a password to join ${invite.org_name} on Haven.`}
               </p>
             </div>
 
