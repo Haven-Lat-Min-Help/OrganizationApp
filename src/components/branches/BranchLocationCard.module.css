@@ -1,0 +1,90 @@
+.card {
+  margin-bottom: var(--space-4);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.hint {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+
+/* Not an error — a nudge. Warning tint behind dark ink (see tokens.css on status colors). */
+.warning {
+  margin: 0;
+  background: var(--status-warning-bg);
+  color: var(--color-ink);
+  font-size: var(--text-sm);
+  border-radius: var(--radius-chip);
+  padding: var(--space-2) var(--space-3);
+}
+
+.match {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-primary-dark);
+}
+
+.mismatch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  background: var(--status-warning-bg);
+  border-radius: var(--radius-chip);
+  padding: var(--space-3);
+}
+
+.mismatchText {
+  margin: 0;
+  color: var(--color-ink);
+  font-size: var(--text-sm);
+}
+
+.fieldError {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-emergency-pressed);
+}
+
+.error {
+  margin: 0;
+  background: var(--color-warn-bg);
+  border: 1px solid var(--color-warn-border);
+  color: var(--color-emergency-pressed);
+  font-size: var(--text-sm);
+  border-radius: var(--radius-chip);
+  padding: var(--space-2) var(--space-3);
+}
+
+.success {
+  background: var(--color-tint);
+  border: 1px solid var(--color-tint-border);
+  color: var(--color-primary-dark);
+  font-size: var(--text-sm);
+  border-radius: var(--radius-chip);
+  padding: var(--space-2) var(--space-3);
+  margin: 0 0 var(--space-4);
+}
+
+@media (max-width: 720px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

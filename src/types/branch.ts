@@ -25,6 +25,11 @@ export interface Branch {
   state: string | null;
   country: string;
   pincode: string | null;
+  /** The map pin. Both null until the branch admin sets it; never one without the other. */
+  latitude: number | null;
+  longitude: number | null;
+  /** Digits only, 10–11. Set by the branch admin. */
+  phone: string | null;
   admin_id: string | null;
   is_active: boolean;
   created_at: string;

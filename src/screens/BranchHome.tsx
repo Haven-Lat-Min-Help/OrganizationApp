@@ -1,3 +1,4 @@
+import { BranchLocationCard } from '../components/branches/BranchLocationCard';
 import { BranchPageHeader } from '../components/branches/BranchPageHeader';
 import { PortalShell } from '../components/layout/PortalShell';
 import { Card } from '../components/ui/Card';
@@ -52,6 +53,7 @@ export function BranchHome() {
               <Detail label="Pincode" value={branch.pincode} />
             </div>
           </Card>
+          <BranchLocationCard branch={branch} />
         </>
       )}
     </PortalShell>

@@ -235,6 +235,23 @@ export function BranchDetail() {
             </div>
           </Card>
 
+          <Card title="Location & contact" className={styles.card}>
+            <div className={styles.stack}>
+              <div className={styles.grid}>
+                <Detail
+                  label="Map location"
+                  value={branch.latitude !== null ? `${branch.latitude}, ${branch.longitude}` : null}
+                />
+                <Detail label="Phone" value={branch.phone} />
+              </div>
+              <p className={styles.hint}>
+                {branch.latitude !== null
+                  ? 'Set by the branch admin. This is where patients in the Haven app see the branch.'
+                  : "The branch admin hasn't set the location yet, so patients can't find this branch in the Haven app."}
+              </p>
+            </div>
+          </Card>
+
           <Card
             title="Branch admin"
             className={styles.card}

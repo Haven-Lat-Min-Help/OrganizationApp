@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { apiFetch, ApiError } from '../config/api';
 import type { Branch } from '../types/branch';
 import { useUserRole } from './UserRoleContext';
@@ -9,7 +9,12 @@ interface BranchState {
   error: string | null;
 }
 
-const BranchContext = createContext<BranchState | null>(null);
+interface BranchContextValue extends BranchState {
+  /** Swap in the branch a successful PATCH returned, so every screen and the top bar see the edit. */
+  replaceBranch: (branch: Branch) => void;
+}
+
+const BranchContext = createContext<BranchContextValue | null>(null);
 
 /**
  * Loads the signed-in branch admin's or staff member's own branch once
@@ -43,11 +48,14 @@ export function BranchProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  return <BranchContext.Provider value={state}>{children}</BranchContext.Provider>;
+  const replaceBranch = useCallback((branch: Branch) => setState({ branch, error: null }), []);
+  const value = useMemo(() => ({ ...state, replaceBranch }), [state, replaceBranch]);
+
+  return <BranchContext.Provider value={value}>{children}</BranchContext.Provider>;
 }
 
 /** Only usable on branch-admin and staff screens, inside <BranchProvider>. */
-export function useBranch(): BranchState {
+export function useBranch(): BranchContextValue {
   const context = useContext(BranchContext);
   if (!context) throw new Error('useBranch must be used inside <BranchProvider>');
   return context;
