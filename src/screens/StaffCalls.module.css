@@ -1,0 +1,106 @@
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-base);
+}
+
+.table th {
+  text-align: left;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0 var(--space-3) var(--space-2) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.table td {
+  padding: var(--space-3) var(--space-3) var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-ink);
+  vertical-align: middle;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.when {
+  white-space: nowrap;
+}
+
+.duration {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.tag {
+  display: inline-block;
+  margin-left: var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--color-body);
+  background: var(--status-serious-bg);
+  border-radius: var(--radius-pill);
+  padding: 1px var(--space-2);
+}
+
+.tagLive {
+  margin-left: 0;
+  background: var(--status-good-bg);
+  color: var(--color-primary-dark);
+}
+
+.chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.chip {
+  font-size: var(--text-sm);
+  color: var(--color-body);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-chip);
+  padding: 2px var(--space-2);
+}
+
+.muted {
+  color: var(--color-muted);
+}
+
+.more {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-4);
+}
+
+.hint {
+  margin: var(--space-4) 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+
+.empty {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: var(--text-base);
+}
+
+.error {
+  background: var(--color-warn-bg);
+  border: 1px solid var(--color-warn-border);
+  color: var(--color-emergency-pressed);
+  font-size: var(--text-sm);
+  border-radius: var(--radius-chip);
+  padding: var(--space-2) var(--space-3);
+  margin: var(--space-4) 0 0;
+}

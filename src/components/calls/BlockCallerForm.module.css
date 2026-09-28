@@ -1,0 +1,94 @@
+.open {
+  margin-top: var(--space-3);
+  padding-left: 0;
+}
+
+.form {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.legend {
+  margin-bottom: var(--space-2);
+  padding: 0;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--color-ink);
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-base);
+  color: var(--color-body);
+  cursor: pointer;
+}
+
+.option input {
+  accent-color: var(--color-primary);
+}
+
+.noteLabel {
+  display: block;
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-1);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-ink);
+}
+
+.note {
+  width: 100%;
+  box-sizing: border-box;
+  resize: vertical;
+  font: inherit;
+  font-size: var(--text-base);
+  color: var(--color-ink);
+  border: 1px solid var(--color-input-border);
+  border-radius: var(--radius-chip);
+  padding: var(--space-2) var(--space-3);
+}
+
+.note:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+.hint {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+}
+
+.error {
+  background: var(--color-warn-bg);
+  border: 1px solid var(--color-warn-border);
+  color: var(--color-emergency-pressed);
+  font-size: var(--text-sm);
+  border-radius: var(--radius-chip);
+  padding: var(--space-2) var(--space-3);
+  margin: var(--space-3) 0 0;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.result {
+  margin: var(--space-3) 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-primary-dark);
+}

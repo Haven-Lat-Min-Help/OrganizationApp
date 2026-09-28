@@ -10,10 +10,9 @@ import { formatDate } from '../utils/formatDate';
 import styles from './Home.module.css';
 
 /**
- * Landing page after login — for now, the signed-in user's own organization
- * details, loaded from GET /organizations/me via OrganizationProvider. Branch
- * cards, staff and the other tabs come later, once the backend has data for
- * them; until then those tabs render disabled.
+ * The org admin's Overview: the organization's own details, loaded from
+ * GET /organizations/me via OrganizationProvider. The numbers live on the
+ * Dashboard tab.
  */
 export function Home() {
   const { organization, error } = useOrganization();
@@ -31,9 +30,7 @@ export function Home() {
           meta={organization ? `Main branch: ${organization.main_branch_name} · ${location}` : undefined}
           actions={
             <>
-              <Button variant="secondary" size="sm">
-                Bulk import staff
-              </Button>
+              
               <Button variant="dark" size="sm" onClick={() => navigate('/branches/new')}>
                 + Add branch
               </Button>

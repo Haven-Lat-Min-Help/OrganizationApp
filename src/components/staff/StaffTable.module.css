@@ -46,6 +46,10 @@
   font-weight: var(--weight-medium);
 }
 
+.nowrap {
+  white-space: nowrap;
+}
+
 .actions {
   text-align: right;
   white-space: nowrap;

@@ -5,10 +5,13 @@ import { useOptionalBranch } from '../../context/BranchContext';
 import { useOrganization } from '../../context/OrganizationContext';
 import styles from './OrgHeader.module.css';
 
+// Titles skipped so "Dr. Anusiya" reads "A", not "DA".
+const TITLES = new Set(['dr', 'mr', 'mrs', 'ms', 'miss', 'prof']);
+
 function initials(name: string): string {
   return name
     .split(/\s+/)
-    .filter(Boolean)
+    .filter((word) => word && !TITLES.has(word.replace(/\.$/, '').toLowerCase()))
     .slice(0, 2)
     .map((word) => word[0].toUpperCase())
     .join('');
@@ -23,8 +26,29 @@ export function OrgHeader() {
   const { organization } = useOrganization();
   // Present for a branch admin or staff member (BranchScope); null for the org admin.
   const branch = useOptionalBranch();
+  const [userName, setUserName] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  // The avatar shows the signed-in person's initials (RLS: a user can read their own profile row).
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadName() {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) return;
+
+      const { data } = await supabase.from('profiles').select('name').eq('id', session.user.id).single();
+      if (!cancelled && data) setUserName(data.name);
+    }
+
+    loadName();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -81,7 +105,7 @@ export function OrgHeader() {
               aria-expanded={menuOpen}
               aria-label="Account menu"
             >
-              {organization ? initials(organization.name) : ''}
+              {userName ? initials(userName) : ''}
             </button>
             {menuOpen && (
               <div className={styles.menu} role="menu">

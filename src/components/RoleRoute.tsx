@@ -31,3 +31,8 @@ export function OrgAdminOnly({ children }: { children: ReactElement }) {
 export function BranchAdminOnly({ children }: { children: ReactElement }) {
   return useUserRole() === 'branch_admin' ? children : <Navigate to="/home" replace />;
 }
+
+/** Pages that exist only for a staff member; anyone else is sent home. */
+export function StaffOnly({ children }: { children: ReactElement }) {
+  return useUserRole() === 'staff' ? children : <Navigate to="/home" replace />;
+}

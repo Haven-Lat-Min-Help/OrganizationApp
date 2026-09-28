@@ -1,12 +1,12 @@
 import type { ReactNode } from 'react';
 import { PageHeader, type PageTab } from '../layout/PageHeader';
 
-// Call details and Accept call have no backend yet — shown disabled (no path),
-// like the unbuilt tabs on the organization pages.
+// Accept call has no page yet — shown disabled (no path), like the unbuilt
+// tabs on the organization pages.
 const STAFF_TABS: PageTab[] = [
   { label: 'Overview', path: '/home' },
-  { label: 'Call details' },
-  { label: 'Accept call' },
+  { label: 'Call details', path: '/calls' },
+  
 ];
 
 /**

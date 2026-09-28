@@ -1,6 +1,7 @@
 import { supabase } from './supabase';
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+// Also the Socket.IO address (CallContext) — REST and sockets share one server.
+export const BACKEND_URL: string = import.meta.env.VITE_BACKEND_URL;
 
 if (!BACKEND_URL) {
   throw new Error('VITE_BACKEND_URL must be set');

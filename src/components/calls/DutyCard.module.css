@@ -1,0 +1,71 @@
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  border-radius: var(--radius-pill);
+  padding: 2px var(--space-3);
+  color: var(--color-ink);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: currentColor;
+}
+
+.on {
+  background: var(--status-good-bg);
+}
+
+.on .dot {
+  color: var(--status-good);
+}
+
+.waiting {
+  background: var(--status-warning-bg);
+}
+
+.waiting .dot {
+  color: var(--status-warning);
+}
+
+.off {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+}
+
+.off .dot {
+  color: var(--color-muted);
+}
+
+.text {
+  margin: 0;
+  font-size: var(--text-base);
+  color: var(--color-body);
+  line-height: var(--leading-normal);
+}
+
+.hint {
+  margin: var(--space-3) 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+
+.error {
+  background: var(--color-warn-bg);
+  border: 1px solid var(--color-warn-border);
+  color: var(--color-emergency-pressed);
+  font-size: var(--text-sm);
+  border-radius: var(--radius-chip);
+  padding: var(--space-2) var(--space-3);
+  margin: var(--space-3) 0 0;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--space-4);
+}

@@ -4,7 +4,9 @@ import { PageHeader, type PageTab } from '../layout/PageHeader';
 const BRANCH_TABS: PageTab[] = [
   { label: 'Overview', path: '/home' },
   { label: 'Staff', path: '/staff' },
-  { label: 'Dashboard', path: '/dashboard' },
+  // Top-level, not under /staff: tabs are NavLinks without `end`, so a path under
+  // /staff would light up the Staff tab too.
+  { label: 'Staff-Call Record', path: '/call-records' },
 ];
 
 /**

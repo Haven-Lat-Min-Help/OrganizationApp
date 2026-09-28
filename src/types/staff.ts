@@ -27,6 +27,31 @@ export interface StaffMember {
   aid_types: StaffAidType[];
 }
 
+// Mirrors list_org_staff() (Backend/supabase/migrations/
+// 20260928010000_org_staff_and_dashboard.sql), returned by
+// GET /organizations/me/staff — the org admin's read-only list.
+
+export interface OrgStaffMember {
+  id: string;
+  name: string;
+  email: string | null;
+  phone: string | null;
+  status: StaffStatus;
+  created_at: string;
+  /** Null only if the branch is gone or outside the org (the data is inconsistent). */
+  branch: { id: string; name: string } | null;
+  aid_types: StaffAidType[];
+}
+
+export interface OrgStaffPage {
+  staff: OrgStaffMember[];
+  /** Staff across every page. */
+  total: number;
+  /** 1-based. */
+  page: number;
+  page_size: number;
+}
+
 /**
  * A one-off message handed to the Staff page through navigation state (e.g.
  * after an invite). warn = something still needs doing, like a failed email.

@@ -1,0 +1,177 @@
+.dock {
+  position: fixed;
+  right: var(--space-5);
+  bottom: var(--space-5);
+  z-index: 1000;
+  width: 360px;
+  max-width: calc(100vw - 2 * var(--space-4));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* Incoming rings: centered over the blurred, inert page (a modal <dialog>). */
+.ringDialog {
+  width: 420px;
+  max-width: calc(100vw - 2 * var(--space-4));
+  max-height: calc(100vh - 2 * var(--space-4));
+  margin: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
+  color: var(--color-ink);
+}
+
+.ringDialog::backdrop {
+  background: rgba(11, 33, 27, 0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* Screen readers only (each ring card has its own visible heading); it holds
+   the initial focus so a stray Enter can't hit Accept or Decline. */
+.ringTitle {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Several rings at once scroll inside the dialog. */
+.ringList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-height: calc(100vh - 2 * var(--space-4));
+  overflow-y: auto;
+  /* Room for the pulse ring, which would otherwise be clipped by the scroller. */
+  padding: var(--space-2);
+  margin: calc(-1 * var(--space-2));
+}
+
+.panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-popover);
+  padding: var(--space-4);
+}
+
+/* A ring must stand out from everything else on the page — brand green, not
+   emergency red, which is reserved for 112 / critical status. */
+.ring {
+  border: 2px solid var(--color-primary);
+  animation: pulse 1.6s var(--ease-standard) infinite;
+}
+
+.active {
+  border-color: var(--color-tint-border);
+  background: var(--color-tint);
+}
+
+.panelHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.label {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  color: var(--color-ink);
+}
+
+/* Countdown on a ring, call time on a call. */
+.meta {
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-muted);
+}
+
+.status {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-body);
+}
+
+.aidTypes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.aidType {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-primary-dark);
+  background: var(--color-tint);
+  border: 1px solid var(--color-tint-border);
+  border-radius: var(--radius-chip);
+  padding: 2px var(--space-2);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+.notice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  background: var(--color-primary-dark);
+  color: #ffffff;
+  font-size: var(--text-sm);
+  border-radius: var(--radius-chip);
+  padding: var(--space-1) var(--space-1) var(--space-1) var(--space-3);
+  box-shadow: var(--shadow-popover);
+}
+
+.notice button {
+  color: #ffffff;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow: var(--shadow-popover), 0 0 0 0 rgba(11, 122, 85, 0.35);
+  }
+  50% {
+    box-shadow: var(--shadow-popover), 0 0 0 8px rgba(11, 122, 85, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ring {
+    animation: none;
+  }
+}
+
+/* No blur support: a darker scrim keeps the ring readable against the page. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .ringDialog::backdrop {
+    background: rgba(11, 33, 27, 0.6);
+  }
+}
+
+@media (max-width: 720px) {
+  .dock {
+    left: var(--space-4);
+    right: var(--space-4);
+    bottom: var(--space-4);
+    width: auto;
+  }
+}
